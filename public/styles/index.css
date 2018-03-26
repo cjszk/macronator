@@ -1,0 +1,34 @@
+header {
+    border: 1px solid black;
+    background-color: #8fafc9;
+    height: 10vh;
+}
+
+h1 {
+    font-size: 48px;
+    text-align: center;
+}
+
+aside {
+    border: 1px solid black;
+    vertical-align: text-top;
+    background-color: #7eb2dd;
+    height: 83vh;
+    margin: 0 !important;
+}
+
+article {
+    border: 1px solid black;
+    height: 83vh;
+    padding: 1px;
+}
+
+footer {
+    height: 7vh;
+    border: 1px solid black;
+    background-color: #8fafc9;
+}
+
+li {
+    list-style: none;
+}
