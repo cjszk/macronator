@@ -14,6 +14,7 @@ router.get('/users', (req, res, next) => {
             path: 'data',
             populate: { path: 'measurements'}
         })
+        .sort('data')
         .then((result) => {
             res.json(result);
         })
@@ -24,6 +25,7 @@ router.get('/users', (req, res, next) => {
 
 router.get('/users/:id', (req, res, next) => {
     const { id } = req.params;
+    console.log(`id is :` +id);
 
     User.findById(id)
         .populate('data')
@@ -59,11 +61,12 @@ router.post('/users', (req, res, next) => {
 
 router.put('/users/:id', (req, res, next) => {
     const { id } = req.params;
-    const { username, password } = req.body;
+    const { username, password, data } = req.body;
 
     const newUser = {
         username: username,
-        password: password
+        password: password,
+        data: data
     }
 
     const options = { new: true }

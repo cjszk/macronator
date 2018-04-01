@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const DataSchema = new mongoose.Schema({
-    date: {type: Date, default: Date.now()},
+    date: {type: Date},
     weight: {type: Number},
     calories: {type: Number},
     measurements: {type: Object, ref: 'Measurement'}

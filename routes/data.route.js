@@ -7,6 +7,7 @@ const Measurement = require('../models/Measurements.model');
 
 router.get('/data', (req, res, next) => {
     Data.find()
+        .sort('-date')
         .populate('measurements')
         .then((result) => {
             res.json(result);
@@ -30,8 +31,9 @@ router.get('/data/:id', (req, res, next) => {
 })
 
 router.post('/data', (req, res, next) => {
-    const { weight, calories, measurements } = req.body;
+    const { weight, calories, measurements, date} = req.body;
     const newData = {
+        date: date,
         weight: weight,
         calories: calories,
         measurements: measurements
@@ -54,8 +56,9 @@ router.post('/data', (req, res, next) => {
 
 router.put('/data/:id', (req, res, next) => {
     const { id } = req.params;
-    const { weight, calories, measurements } = req.body;
+    const { weight, calories, measurements, date } = req.body;
     const newData = {
+        date: date,
         weight: weight,
         calories: calories,
         measurements: measurements

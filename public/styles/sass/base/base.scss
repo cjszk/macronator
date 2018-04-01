@@ -1,0 +1,26 @@
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    /*Change the box model, so that the borders and paddings are no longer added to total width and height*/
+    box-sizing: inherit;
+}
+
+html {
+    //This defines what 1rem is;
+    font-size: 62.5%;
+    
+}
+
+body {
+    box-sizing: border-box;
+    background-image: linear-gradient(to right, rgba($color-black, 0.8), rgba($color-secondary, 0.8)), url('images/200229.jpg');
+    height: 100vh;
+    width: 100vw;    
+    *{font-family: 'Share Tech', sans-serif;}
+}
+
+.row {
+    @include clearfix;
+}
