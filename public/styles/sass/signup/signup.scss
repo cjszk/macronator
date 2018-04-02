@@ -9,7 +9,6 @@
     *{list-style: none;}
     *{font-size: 1.4rem}
     padding-bottom: 3rem;
-    animation: moveInSideMain 1s ease-out;
     &__form {
         &__username {
             margin-left: auto;
@@ -47,6 +46,20 @@
 .sign-up-confirm {
     font-size: 1.2rem;
     margin-top: 1rem;
+    padding: .5rem 1.5rem;
+    animation: moveInTop 1s ease-out;
+    border-radius: 10rem;
+    background-color: $color-black;
+    color: $color-white;
+    min-width: 10%;
+    max-width: 100%;
+}
+
+.return-login {
+    font-size: 1.2rem;
+    position: fixed;
+    margin-left: 12rem;
+    margin-top: -8rem;
     padding: .5rem 1.5rem;
     animation: moveInTop 1s ease-out;
     border-radius: 10rem;

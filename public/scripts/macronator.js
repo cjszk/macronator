@@ -67,13 +67,20 @@ const macronator = (function() {
                     <input class="sign-up__form__username" required>
                     <label class="sign-up__form__label">Password</label>
                     <input class="sign-up__form__password" type="password" required>
-                    <label class="sign-up__form__label">Password</label>
+                    <label class="sign-up__form__label">Confirm Password</label>
                     <input class="sign-up__form__confirm" type="password" required>
                     <button class="sign-up-confirm" type="submit">Sign Up</button>
                 </form>
+                <button class="return-login">Return to Login</button>
             </div>
             `
             render(html);
+        })
+    }
+
+    const returnLogin = function () {
+        $('.app').on('click', '.return-login', function () {
+            loginScreen();
         })
     }
 
@@ -739,6 +746,7 @@ const macronator = (function() {
 
 
     function bindEventListeners() {
+        returnLogin();
         submitSignUp();
         signUp();
         submitChangeGoals();
