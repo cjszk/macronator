@@ -9,7 +9,8 @@ const userRouter = require('./routes/user.route');
 const dataRouter = require('./routes/data.route');
 const measurementRouter = require('./routes/measurement.route');
 
-const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/macro-coach';
+// const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/macro-coach';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://chris:macronator@ds127958.mlab.com:27958/macronator';
 
 const User = require('./models/User.model')
 

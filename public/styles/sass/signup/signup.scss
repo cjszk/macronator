@@ -1,4 +1,4 @@
-.login {
+.sign-up {
     background-image: linear-gradient(to right, rgba($color-secondary, 0.6), rgba($color-secondary, 0.8));
     border-radius: 10rem;
     width: 80%;
@@ -11,6 +11,21 @@
     padding-bottom: 3rem;
     animation: moveInSideMain 1s ease-out;
     &__form {
+        &__username {
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+        &__password {
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+        &__confirm {
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
         &__button {
             font-size: 1.2rem;
             margin: 1rem 1rem;
@@ -23,16 +38,15 @@
             max-width: 100%;
         }
         &__label {
+            display: block;
             color: white;
         }
     }
 }
 
-.sign-up-button {
+.sign-up-confirm {
     font-size: 1.2rem;
-    position: fixed;
-    margin-left: 12rem;
-    margin-top: -8rem;
+    margin-top: 1rem;
     padding: .5rem 1.5rem;
     animation: moveInTop 1s ease-out;
     border-radius: 10rem;

@@ -179,6 +179,70 @@ h4 {
   .login__form__label {
     color: white; }
 
+.sign-up-button {
+  font-size: 1.2rem;
+  position: fixed;
+  margin-left: 12rem;
+  margin-top: -8rem;
+  padding: .5rem 1.5rem;
+  animation: moveInTop 1s ease-out;
+  border-radius: 10rem;
+  background-color: #000000;
+  color: #ffffff;
+  min-width: 10%;
+  max-width: 100%; }
+
+.sign-up {
+  background-image: linear-gradient(to right, rgba(11, 42, 99, 0.6), rgba(11, 42, 99, 0.8));
+  border-radius: 10rem;
+  width: 80%;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 2rem);
+  text-align: center;
+  padding-bottom: 3rem;
+  animation: moveInSideMain 1s ease-out; }
+  .sign-up * {
+    list-style: none; }
+  .sign-up * {
+    font-size: 1.4rem; }
+  .sign-up__form__username {
+    margin-left: auto;
+    margin-right: auto;
+    display: block; }
+  .sign-up__form__password {
+    margin-left: auto;
+    margin-right: auto;
+    display: block; }
+  .sign-up__form__confirm {
+    margin-left: auto;
+    margin-right: auto;
+    display: block; }
+  .sign-up__form__button {
+    font-size: 1.2rem;
+    margin: 1rem 1rem;
+    padding: .5rem 1.5rem;
+    animation: moveInTop 1s ease-out;
+    border-radius: 10rem;
+    background-color: #000000;
+    color: #ffffff;
+    min-width: 10%;
+    max-width: 100%; }
+  .sign-up__form__label {
+    display: block;
+    color: white; }
+
+.sign-up-confirm {
+  font-size: 1.2rem;
+  margin-top: 1rem;
+  padding: .5rem 1.5rem;
+  animation: moveInTop 1s ease-out;
+  border-radius: 10rem;
+  background-color: #000000;
+  color: #ffffff;
+  min-width: 10%;
+  max-width: 100%; }
+
 .input {
   background-image: linear-gradient(to right, rgba(11, 42, 99, 0.6), rgba(11, 42, 99, 0.8));
   border-radius: 10rem;
@@ -270,6 +334,9 @@ h4 {
         transition: .2s; }
       .details__ul__li__delete:active {
         transform: scaleX(1) scaleY(1); }
+
+.details h4 {
+  color: white; }
 
 ul li a b {
   color: #14ad14; }

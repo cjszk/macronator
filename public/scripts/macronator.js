@@ -18,6 +18,7 @@ const macronator = (function() {
                 <br>
                 <button class="login__form__button" type="submit">Log In</button>
             </form>
+            <button class="sign-up-button">New User Sign Up</button>
         </div>
         `
         render(html);
@@ -54,6 +55,62 @@ const macronator = (function() {
                 macronator.renderMain();
             }
         }, 1000)
+        })
+    }
+
+    const signUp = function () {
+        $('.app').on('click', '.sign-up-button', function () {
+            let html = `
+            <div class="sign-up">
+                <form class="sign-up__form">
+                    <label class="sign-up__form__label">Username</label>
+                    <input class="sign-up__form__username" required>
+                    <label class="sign-up__form__label">Password</label>
+                    <input class="sign-up__form__password" type="password" required>
+                    <label class="sign-up__form__label">Password</label>
+                    <input class="sign-up__form__confirm" type="password" required>
+                    <button class="sign-up-confirm" type="submit">Sign Up</button>
+                </form>
+            </div>
+            `
+            render(html);
+        })
+    }
+
+    const submitSignUp = function () {
+        $('.app').on('submit', '.sign-up__form', function (event) {
+            event.preventDefault();
+            const username = $('.sign-up__form__username').val();
+            const password = $('.sign-up__form__password').val();
+            const confirm = $('.sign-up__form__confirm').val();
+            api.getUsers(function (results) {
+                let taken = false;
+                results.forEach((user) => {
+                    if (user.username === username) {
+                        taken = true;
+                    } 
+                })
+                if (taken === true) {
+                    alert('That username is already taken, please choose another.')
+                } else {
+                    if (password !== confirm) {
+                        alert('Please ensure that your passwords are matching.')
+                        $('.sign-up__form__password').val('');
+                        $('.sign-up__form__confirm').val('');
+                    } else {
+                        const newUser = {
+                            username: username,
+                            password: password,
+                        }
+                        api.postUser(newUser, function(result) {
+                            console.log(result);
+                            store.currentUser = result
+                            changeGoalTab();
+                            console.log(store.currentUser);
+                        })
+                    }
+                }
+            });
         })
     }
 
@@ -165,39 +222,68 @@ const macronator = (function() {
             cryptoDateArrayTemp = cryptoDateArray.slice(cryptoDateArray.length-30, cryptoDateArray.length); 
             cryptoDateArray = cryptoDateArrayTemp 
         }
-
+        console.log(store.currentUser)
         //Calculate TDEE
-        let estDailyTDEE;
-        let TDEEArray = [];
-        for (let i=1; i<cryptoDateArray.length; i++) {
-            let dateMargin = cryptoDateArray[i].cryptoDate - cryptoDateArray[i-1].cryptoDate;
-            let avgCalorieConsumption = (cryptoDateArray[i].calories + cryptoDateArray[i-1].calories) / 2;
-            let weightMargin = cryptoDateArray[i].weight - cryptoDateArray[i-1].weight;
-            estDailyTDEE = ((avgCalorieConsumption*dateMargin) - (weightMargin*3500)) / dateMargin;
-            TDEEArray.push(estDailyTDEE);
-        }
-
-        const calculatedTDEE = Math.round(TDEEArray.reduce((a, b) => {
-           return a + b
-        })/TDEEArray.length)
-        console.log(calculatedTDEE)
-
+        let calculatedTDEE;
         let advised;
+        let protein;
+        let fat;
+        let carbs;
+        if (store.currentUser.data.length > 1) {
+            let estDailyTDEE;
+            let TDEEArray = [];
+            for (let i=1; i<cryptoDateArray.length; i++) {
+                let dateMargin = cryptoDateArray[i].cryptoDate - cryptoDateArray[i-1].cryptoDate;
+                let avgCalorieConsumption = (cryptoDateArray[i].calories + cryptoDateArray[i-1].calories) / 2;
+                let weightMargin = cryptoDateArray[i].weight - cryptoDateArray[i-1].weight;
+                estDailyTDEE = ((avgCalorieConsumption*dateMargin) - (weightMargin*3500)) / dateMargin;
+                TDEEArray.push(estDailyTDEE);
+            }
+    
+            calculatedTDEE = Math.round(TDEEArray.reduce((a, b) => {
+               return a + b
+            })/TDEEArray.length)
+            console.log(calculatedTDEE)
+        } else {
+            let weightFactor = `${measurements.weight}`;
+            calculatedTDEE = ( weightFactor * 15);
+        }
         if (currentUser.goal === "Gain") {
             advised = Math.round(calculatedTDEE * 1.05);
         } else if (currentUser.goal === "Cut") {
-            advised = Math.round(calculatedTDEE * 0.8);
+            if (measurements.weight > 250) {
+                //Obese
+                advised = Math.round(calculatedTDEE * 0.6);
+            } else {
+                //Otherwise~
+                advised = Math.round(calculatedTDEE * 0.8);
+            }
         } else {
             advised = Math.round(calculatedTDEE);
         }
-        let protein = Math.round(measurements.weight);
-        let fat = Math.round(measurements.weight * 0.4);
-        let carbs = Math.round( ( advised - ((protein * 4) + (fat * 9))) / 4);
+        protein = Math.round(measurements.weight);
+        fat = Math.round(measurements.weight * 0.4);
+        carbs = Math.round( ( advised - ((protein * 4) + (fat * 9))) / 4);
+        
+        let accuracy;
+        if (store.currentUser.data.length < 4) {
+            accuracy = "Very Innaccurate (Need more data)"
+        } else if (store.currentUser.data.length < 8) {
+            accuracy = "Innaccurate (Need more data)"
+        } else if (store.currentUser.data.length < 15) {
+            accuracy = "Fairly Accurate"
+        } else if (store.currentUser.data.length < 21) {
+            accuracy = "Accurate"
+        } else if (store.currentUser.data.length < 28) {
+            accuracy = "Very Accurate"
+        }
+
         const html = `
             <div class="home">
                 <h3 class="home__h3">Overview</h3>
                 <div class="home__left col-5">
-                    <div class="home__left__tdee"><p>Your Current Estimated TDEE: <b>${calculatedTDEE} kcal</b></p></div>
+                    <div class="home__left__tdee"><p>Your Current Estimated TDEE: <b>${calculatedTDEE} (kcal)</b></p></div>
+                    <div class="home__left__accuracy"><p>Accuracy of Calculations: <b>${accuracy}</b></p></div>
                     <div class="home__left__current-weight"><p>Most Recent Weigh-In: <b>${measurements.weight} lbs</b></p></div>
                     <div class="home__left__goal"><p>Current Goal: <b>${currentUser.goal}</b></p></div>
                     <div class="home__left__advice-calories"><p>Advised Calorie Consumption: <b>${advised} kcal</b> </p></div>
@@ -308,6 +394,9 @@ const macronator = (function() {
             </ul>
         </div>
         `;
+        if (store.currentUser.data.length < 1) {
+            html = `<div class="details"><h4>You currently have no records.</h4></div>`
+        }
         render(html);
     }
 
@@ -403,7 +492,6 @@ const macronator = (function() {
             event.preventDefault();
             const date = $('.input__form__basic__date').val();
             console.log(date);
-            console.log(store.currentUser.data[0].date.slice(0, 10))
             const calories = $('.input__form__basic__calories').val();
             const weight = $('.input__form__basic__weight').val();
             const shoulders = $('.input__form__measurements__shoulders').val();
@@ -597,21 +685,25 @@ const macronator = (function() {
 
     const changeGoals = function () {
         $('.app').on('click', '.settings__goals', function () {
-            const html = `
-            <div class="settings">
-                <form class ="settings__goals-form" action="submit">
-                    <label for="settings__change-goals">Set Goal:</label>
-                    <select class="settings__change-goals" name="goals" size="3">
-                        <option value="Gain">Gain Muscle</option>
-                        <option value="Cut">Lose Fat</option>
-                        <option value="Maintain">Maintain</option>
-                    </select>
-                    <button class="submit-data">Submit</button>
-                </form>
-            </div>
-            `
-            render(html);
+            changeGoalTab();
         })
+    }
+
+    const changeGoalTab = function () {
+        const html = `
+        <div class="settings">
+            <form class ="settings__goals-form" action="submit">
+                <label for="settings__change-goals">Set Goal:</label>
+                <select class="settings__change-goals" name="goals" size="3">
+                    <option value="Gain">Gain Muscle</option>
+                    <option value="Cut">Lose Fat</option>
+                    <option value="Maintain">Maintain</option>
+                </select>
+                <button class="submit-data">Submit</button>
+            </form>
+        </div>
+        `
+        render(html);
     }
 
     const submitChangeGoals = function () {
@@ -633,7 +725,11 @@ const macronator = (function() {
                     store.currentUser = results;
                     alert('Goal has been updated');
                     macronator.sortDataDate();
-                    handleNotNew();
+                    if (store.currentUser.data.length < 1) {
+                        handleNew();
+                    } else {
+                        handleNotNew();
+                    }
                 })
             } else {
                 alert('Please select a goal.')
@@ -643,6 +739,8 @@ const macronator = (function() {
 
 
     function bindEventListeners() {
+        submitSignUp();
+        signUp();
         submitChangeGoals();
         changeGoals();
         submitNewPassword();

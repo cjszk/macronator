@@ -47,16 +47,12 @@ router.post('/users', (req, res, next) => {
 
     const newUser = {
         username: username,
-        password: password
+        password: password,
+        data: [],
+        goal: "Maintain"
     }
 
     User.create(newUser)
-        .populate('data')
-        //Deep populate measurements
-        .populate({
-            path: 'data',
-            populate: { path: 'measurements'}
-        })
         .then((result) => {
             res.location(`${req.originalUrl}/${result.id}`).status(201).json(result);
         })

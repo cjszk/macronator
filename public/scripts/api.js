@@ -40,6 +40,16 @@ const api = (function() {
         })
     }
 
+    const postUser = function (data, callback) {
+        $.ajax({
+            url: `${BASE_URL}/users/`,
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: callback
+        })
+    }
+
     const postData = function(data, callback) {
         $.ajax({
             url: `${BASE_URL}/data/`,
@@ -70,6 +80,7 @@ const api = (function() {
     }
 
     return {
+        postUser,
         updateData,
         updateMeasurements,
         deleteData,
