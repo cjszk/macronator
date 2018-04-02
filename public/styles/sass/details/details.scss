@@ -1,0 +1,42 @@
+.details {
+    background-image: linear-gradient(to right, rgba($color-secondary, 0.6), rgba($color-secondary, 0.8));
+    border-radius: 10rem;
+    width: 80%;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 2rem);
+    text-align: center;
+    *{list-style: none;}
+    *{font-size: 1.4rem}
+    padding-bottom: 3rem;
+    &__ul {
+        &__li {
+            color: $color-white;
+            &__a {
+                color: $color-white;
+            }
+            &__delete {
+                font-size: 1.2rem;
+                margin: .5rem 2rem;
+                padding: .2rem 1.5rem;
+                border-radius: 10rem;
+                background-color: $color-black;
+                color: $color-white;
+                min-width: 10%;
+                max-width: 100%;
+                &:hover {
+                    transform: scaleX(1.1) scaleY(1.1);
+                    transition: .2s;
+                    
+                }
+                &:active {
+                    transform: scaleX(1) scaleY(1);
+                }
+            }
+        }
+    }
+}
+
+ul li a b {
+    color: $color-lime-green;
+}

@@ -7,12 +7,6 @@ const api = (function() {
 
     const getUserById = function(id, callback) {
         $.getJSON(`${BASE_URL}/users/${id}`, callback);
-        // $.ajax({
-        //     url: `${BASE_URL}/users/${id}`,
-        //     method: 'GET',
-        //     contentType: 'application/json',
-        //     success: callback
-        // })
     }
 
     const updateUser = function(id, updateData, callback) {
@@ -24,6 +18,26 @@ const api = (function() {
             success: callback
         })
         console.log('ran through updateId')
+    }
+
+    const updateData = function(id, updateData, callback) {
+        $.ajax({
+            url: `${BASE_URL}/data/${id}`,
+            method: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(updateData),
+            success: callback
+        })
+    }
+
+    const updateMeasurements = function(id, updateData, callback) {
+        $.ajax({
+            url: `${BASE_URL}/measurements/${id}`,
+            method: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(updateData),
+            success: callback
+        })
     }
 
     const postData = function(data, callback) {
@@ -46,7 +60,19 @@ const api = (function() {
         })
     }
 
+    const deleteData = function(id, callback) {
+        $.ajax({
+            url: `${BASE_URL}/data/${id}`,
+            method: 'DELETE',
+            contentType: 'application/json',
+            success: callback
+        })
+    }
+
     return {
+        updateData,
+        updateMeasurements,
+        deleteData,
         getUsers,
         getUserById,
         updateUser,

@@ -6,24 +6,28 @@ const macronator = (function() {
 
     const loginScreen = function () {
         let html = `
-            <div class="login-div">
-                <form class="login-form">
-                    <label>Login Username</label>
-                    <input class="username-input" required>
-                    <label>Login Password</label>
-                    <input class="password-input" type="password" required>
-                    <button type="submit">Log In</button>
-                </form>
-            </div>
+        <div class="login">
+            <form class="login__form">
+                <label class="login__form__label">Login Username</label>
+                <br>
+                <input class="login__form__username" required>
+                <br>
+                <label class="login__form__label">Login Password</label>
+                <br>
+                <input class="login__form__password" type="password" required>
+                <br>
+                <button class="login__form__button" type="submit">Log In</button>
+            </form>
+        </div>
         `
         render(html);
     }
 
     const login = function () {
-        $('.app').on('submit', '.login-form', function(event) {
+        $('.app').on('submit', '.login__form', function(event) {
             event.preventDefault();
-            const loginUsername = $('.username-input').val();
-            const loginPassword = $('.password-input').val();
+            const loginUsername = $('.login__form__username').val();
+            const loginPassword = $('.login__form__password').val();
             $('.password-input').val('');
             let found = false;
             api.getUsers(function(results) {
@@ -31,6 +35,7 @@ const macronator = (function() {
                 results.forEach((user) => {
                     if (user.username === loginUsername) {
                         if (user.password === loginPassword) {
+                            console.log(user);
                             store.currentUser = user;
                         } else {
                             found = true;
@@ -185,19 +190,17 @@ const macronator = (function() {
         } else {
             advised = Math.round(calculatedTDEE);
         }
-        let protein = measurements.weight;
+        let protein = Math.round(measurements.weight);
         let fat = Math.round(measurements.weight * 0.4);
         let carbs = Math.round( ( advised - ((protein * 4) + (fat * 9))) / 4);
-        // let exampleCaloriesRemaining = Math.round((advised - (protein*4) - (carbs*4) - (fat*9)));
-        // let exampleCarbs = Math.round(carbs + ((exampleCaloriesRemaining * 0.7) / 4));
-        // let exampleFat = Math.round(fat + ((exampleCaloriesRemaining * 0.3) / 9));
         const html = `
             <div class="home">
+                <h3 class="home__h3">Overview</h3>
                 <div class="home__left col-5">
-                    <div class="home__left__tdee"><p>Your Current Estimated TDEE: <b>${calculatedTDEE}</b></p></div>
-                    <div class="home__left__current-weight"><p>Most Recent Weigh-In: <b>${measurements.weight}</b></p></div>
+                    <div class="home__left__tdee"><p>Your Current Estimated TDEE: <b>${calculatedTDEE} kcal</b></p></div>
+                    <div class="home__left__current-weight"><p>Most Recent Weigh-In: <b>${measurements.weight} lbs</b></p></div>
                     <div class="home__left__goal"><p>Current Goal: <b>${currentUser.goal}</b></p></div>
-                    <div class="home__left__advice-calories"><p>Advised Calorie Consumption: <b>${advised}</b> </p></div>
+                    <div class="home__left__advice-calories"><p>Advised Calorie Consumption: <b>${advised} kcal</b> </p></div>
                     <div class="home__left__advice-macros">Example Macro Distribution: <b>${protein}g Protein / ${carbs}g Carbs / ${fat}g Fat</b></div>
                 </div>
                 <div class="home__right col-5">
@@ -215,40 +218,175 @@ const macronator = (function() {
                 </div>
             </div>
         `
-        // const html = `
-        //     <div class="left-panel">
-        //         <div class="tdee"><p>Your Current Estimated TDEE: ${calculatedTDEE}</p></div>
-        //         <div class="goal"><p>Goal: ${currentUser.goal}</p></div>
-        //         <div class="current-weight"><p>Most Recent Weigh-In: ${measurements.weight} lbs</p></div>
-        //         <div class="advice-calories"><p>Advised Calorie Consumption: ${advised}</p></div>
-        //         <div class="advice-macros">
-        //             <ul>Advised Macro Distribution: 
-        //                 <li>Approximately: ${protein}g protein</li>
-        //                 <li> Minimum of: ${carbs}g carbohydrates</li>
-        //                 <li> Minimum of: ${fat}g fat</li>
-        //                 <br>
-        //                 <li> Remaining calories as desired from either carbohydrates or fats</li>
-        //                 <br>
-        //                 <li>For Example: <br>${protein}g Protein / ${exampleCarbs}g Carbs / ${exampleFat}g Fats</li>
-        //             </ul>
-        //         </div>
-        //         <div class="body-stats">
-        //             <ul>Most recent Stats:
-        //                 <li>Shoulders: ${measurements.shoulders}"</li>
-        //                 <li>Chest: ${measurements.chest}"</li>
-        //                 <li>Waist 2" above: ${measurements.waistAbove}"</li>
-        //                 <li>Waist (at navel): ${measurements.waist}"</li>
-        //                 <li>Waist 2" below: ${measurements.waistBelow}"</li>
-        //                 <li>Hips: ${measurements.hips}"</li>
-        //                 <li>Quadriceps: ${measurements.quads}"</li>
-        //             </ul>
-        //         </div>
-        //     </div>
-        // `;
         render(html);
+    }
+    
+
+    const home = function () {
+        $('.header__home').on('click', function() {
+            renderMain();
+        })
+    }
+
+    const inputNewForm = function () {
+        if (store.currentUser) {
+            const html = `
+            <div class="input">
+            <h3 class="input__h3">Input New Data</h3>
+            <form class="input__form">
+                <div class="input__form__basic">
+                    <h4 class="input__h4">Basic Info</h4>
+                    <label>Date</label>
+                    <input class="input__form__basic__date" type="date" required>
+                    <label>Calories Consumed</label>
+                    <input type="number" class="input__form__basic__calories" max="15000">
+                    <label>Weight</label>
+                    <input type="number" class="input__form__basic__weight" max="600">
+                </div>
+                <button class="submit-data" type="submit">Submit</button>
+                <div class="input__form__measurements">
+                    <h4 class="input__h4">Body Measurements (optional)</h4>
+                    <label>Shoulders</label>
+                    <input type="number" class="input__form__measurements__shoulders">
+                    <label>Chest</label>
+                    <input type="number" class="input__form__measurements__chest">
+                    <label>Waist 2" Above</label>
+                    <input type="number" class="input__form__measurements__waistAbove">
+                    <label>Waist (at navel)</label>
+                    <input type="number" class="input__form__measurements__waist">
+                    <label>Waist 2" Below</label>
+                    <input type="number" class="input__form__measurements__waistBelow">
+                    <label>Hips</label>
+                    <input type="number" class="input__form__measurements__hips">
+                    <label>Quads</label>
+                    <input type="number" class="input__form__measurements__quads">
+                </div>
+            </form>
+        </div>
+            `
+            render(html);
+        }
+    }
+
+    const inputNew = function () {
+        $('.input-data').on('click', function() {
+            inputNewForm();
+        })
     }
 
     const handleNew = function() {
+        alert('Since you have no data yet, please input some data.')
+        inputNewForm();
+    }
+
+    const detailsTab = function () {
+        let liStrings = [];
+        store.currentUser.data.forEach((item) => {
+            let date = item.date.slice(0, 10)
+            console.log(item.id);
+            liStrings.push(`<li class="details__ul__li"><a 
+            measurements-id="${item.measurements.id}"
+            data-id="${item.id}" 
+            calories="${item.calories}" weight="${item.weight}" date="${item.date}"
+            shoulders="${item.measurements.shoulders}"
+            chest="${item.measurements.chest}"
+            waistAbove="${item.measurements.waistAbove}"
+            waist="${item.measurements.waist}"
+            waistBelow="${item.measurements.waistBelow}"
+            hips="${item.measurements.hips}"
+            quads="${item.measurements.quads}"
+             href="#" class="details__ul__li__a">
+             Date: <b>${date}</b> Calories: <b>${item.calories}</b> Weight: <b>${item.weight}</b>
+             </a><button id="${item.id}" class="details__ul__li__delete">Delete</button></li>`)
+        });
+        let joinedLi = liStrings.join('');
+        console.log(joinedLi);
+        let html = `
+        <div class="details">
+            <ul class="details__ul">
+                ${joinedLi}
+            </ul>
+        </div>
+        `;
+        render(html);
+    }
+
+    const clickDetailsTab = function () {
+        $('.view-edit-details').on('click', function() {
+            detailsTab();
+        })
+    }
+
+    const deleteEntry = function () {
+        $('.app').on('click', '.details__ul__li__delete', function() {
+            const id = $(this).attr('id');
+            api.deleteData(id, function () {
+                console.log(`Deleted ${id}`)
+                let dataArr = [];
+                store.currentUser.data.forEach(function(item) {
+                    if (item.id !== id) {
+                        dataArr.push(item);
+                    }
+                })
+                store.currentUser.data = dataArr;
+                macronator.sortDataDate();
+                console.log(store.currentUser);
+                detailsTab();
+            })
+        })
+    }
+
+    //Needs more work. This isn't working as intended.
+    const selectDate = function () {
+        $('.app').on('click', '.details__ul__li__a', function () {
+            const dateInfo = $(this).attr('date');
+            const date = dateInfo.slice(0, 10);
+            const calories = $(this).attr('calories');
+            const weight = $(this).attr('weight');
+            const shoulders = $(this).attr('shoulders');
+            const chest = $(this).attr('chest');
+            const waistAbove = $(this).attr('waistAbove');
+            const waist = $(this).attr('waist');
+            const waistBelow = $(this).attr('waistBelow');
+            const hips = $(this).attr('hips');
+            const quads = $(this).attr('quads');
+            console.log($(this).attr('measurements-id'));
+            const html = `
+            <div class="edit" data-id="${$(this).attr('data-id')}" measurements-id="${$(this).attr('measurements-id')}">
+            <h3 class="edit__h3">Edit New Data</h3>
+            <form class="edit__form">
+                <div class="edit__form__basic">
+                    <h4 class="edit__h4">Basic Info</h4>
+                    <label>Date</label>
+                    <input id="edit__form__basic__date" class="edit__form__basic__date" type="date" value="${date}" required>
+                    <label>Calories Consumed</label>
+                    <input type="number" class="edit__form__basic__calories" value="${calories}" max="15000">
+                    <label>Weight</label>
+                    <input type="number" class="edit__form__basic__weight" value=${weight} max="600">
+                </div>
+                <button class="submit-data" type="submit">Submit</button>
+                <div class="edit__form__measurements">
+                    <h4 class="edit__h4">Body Measurements (optional)</h4>
+                    <label>Shoulders</label>
+                    <input type="number" class="edit__form__measurements__shoulders" value="${shoulders}">
+                    <label>Chest</label>
+                    <input type="number" class="edit__form__measurements__chest" value="${chest}">
+                    <label>Waist 2" Above</label>
+                    <input type="number" class="edit__form__measurements__waistAbove" value="${waistAbove}">
+                    <label>Waist (at navel)</label>
+                    <input type="number" class="edit__form__measurements__waist" value="${waist}">
+                    <label>Waist 2" Below</label>
+                    <input type="number" class="edit__form__measurements__waistBelow" value="${waistBelow}">
+                    <label>Hips</label>
+                    <input type="number" class="edit__form__measurements__hips" value="${hips}">
+                    <label>Quads</label>
+                    <input type="number" class="edit__form__measurements__quads" value="${quads}">
+                </div>
+            </form>
+        </div>
+            `
+            render(html);
+        })
 
     }
 
@@ -261,20 +399,102 @@ const macronator = (function() {
     }
 
     const submitData = function() {
-        $('.app').on('submit', '.submit-data-form', function(event) {
+        $('.app').on('submit', '.input__form', function(event) {
             event.preventDefault();
-            const date = $('.input-date').val();
-            const calories = $('.input-calories').val();
-            const weight = $('.input-weight').val();
-            const shoulders = $('.input-shoulders').val();
-            const chest = $('.input-chest').val();
-            const waistAbove = $('.input-waistAbove').val();
-            const waist = $('.input-waist').val();
-            const waistBelow = $('.input-waistBelow').val();
-            const hips = $('.input-hips').val();
-            const quads = $('.input-quads').val();
-            let currentUser = store.currentUser;
-            let newMeasurements = {
+            const date = $('.input__form__basic__date').val();
+            console.log(date);
+            console.log(store.currentUser.data[0].date.slice(0, 10))
+            const calories = $('.input__form__basic__calories').val();
+            const weight = $('.input__form__basic__weight').val();
+            const shoulders = $('.input__form__measurements__shoulders').val();
+            const chest = $('.input__form__measurements__chest').val();
+            const waistAbove = $('.input__form__measurements__waistAbove').val();
+            const waist = $('.input__form__measurements__waist').val();
+            const waistBelow = $('.input__form__measurements__waistBelow').val();
+            const hips = $('.input__form__measurements__hips').val();
+            const quads = $('.input__form__measurements__quads').val();
+            let existing = false;
+            store.currentUser.data.forEach((item) => {
+                if (date === item.date.slice(0, 10)) {
+                    existing = true;
+                }
+            })
+            if (existing === true) {
+                alert('That date already has an entry.')
+            } else {
+                $('.input__form__basic__date').val('');
+                $('.input__form__basic__calories').val('');
+                $('.input__form__basic__weight').val('');
+                $('.input__form__measurements__shoulders').val('');
+                $('.input__form__measurements__chest').val('');
+                $('.input__form__measurements__waistAbove').val('');
+                $('.input__form__measurements__waist').val('');
+                $('.input__form__measurements__waistBelow').val('');
+                $('.input__form__measurements__hips').val('');
+                $('.input__form__measurements__quads').val('');
+                const currentUser = store.currentUser;
+                const newMeasurements = {
+                    shoulders: shoulders,
+                    chest: chest,
+                    waistAbove: waistAbove,
+                    waist: waist,
+                    waistBelow: waistBelow,
+                    hips: hips,
+                    quads: quads
+                }
+                console.log(newMeasurements);
+                //post the measurement data, then post the data data along with measurement ID, then update the data ID to the user data
+                api.postMeasurement(newMeasurements, function(results) {
+                    let measurementsId = results.id
+                    console.log(measurementsId);
+                    const newData = {
+                        date: date,
+                        weight: weight,
+                        calories: calories,
+                        measurements: measurementsId
+                    }
+                    console.log(newData);
+                    api.postData(newData, function(results) {
+                        console.log(results);
+                        let newDataId = results.id
+                        currentUser.data.push()
+                        let newUserUpdate = {
+                            username: currentUser.username,
+                            password: currentUser.password,
+                            data: [],
+                            goal: currentUser.goal
+                        }
+                        currentUser.data.forEach((arr) => {
+                            newUserUpdate.data.push(arr.id)
+                        })
+                        newUserUpdate.data.push(newDataId);
+                        console.log(newUserUpdate);
+                        console.log(currentUser.id);
+                        api.updateUser(currentUser.id, newUserUpdate, function(results) {
+                            console.log(results);
+                            store.currentUser = results;
+                            macronator.sortDataDate();
+                        })
+                    })
+                })
+            }
+        })
+    }
+    const editData = function() {
+        $('.app').on('submit', '.edit__form', function(event) {
+            event.preventDefault();
+            const date = $('.edit__form__basic__date').val();
+            const calories = $('.edit__form__basic__calories').val();
+            const weight = $('.edit__form__basic__weight').val();
+            const shoulders = $('.edit__form__measurements__shoulders').val();
+            const chest = $('.edit__form__measurements__chest').val();
+            const waistAbove = $('.edit__form__measurements__waistAbove').val();
+            const waist = $('.edit__form__measurements__waist').val();
+            const waistBelow = $('.edit__form__measurements__waistBelow').val();
+            const hips = $('.edit__form__measurements__hips').val();
+            const quads = $('.edit__form__measurements__quads').val();
+            const currentUser = store.currentUser;
+            const newMeasurements = {
                 shoulders: shoulders,
                 chest: chest,
                 waistAbove: waistAbove,
@@ -283,54 +503,158 @@ const macronator = (function() {
                 hips: hips,
                 quads: quads
             }
-            console.log(newMeasurements);
-            //post the measurement data, then post the data data along with measurement ID, then update the data ID to the user data
-            api.postMeasurement(newMeasurements, function(results) {
-                let measurementsId = results.id
-                console.log(measurementsId);
-                let newData = {
+
+            const dataId = $('.edit').attr('data-id');
+            const measurementsId = $('.edit').attr('measurements-id')
+            api.updateMeasurements(measurementsId, newMeasurements, function (result) {
+                console.log(result)
+                const newData = {
                     date: date,
                     weight: weight,
                     calories: calories,
                     measurements: measurementsId
                 }
-                api.postData(newData, function(results) {
-                    console.log(results);
-                    let newDataId = results.id
-                    currentUser.data.push()
-                    let newUserUpdate = {
-                        username: currentUser.username,
-                        password: currentUser.password,
-                        data: []
-                    }
-                    currentUser.data.forEach((arr) => {
-                        newUserUpdate.data.push(arr.id)
-                    })
-                    newUserUpdate.data.push(newDataId);
-                    console.log(newUserUpdate);
-                    console.log(currentUser.id);
-                    api.updateUser(currentUser.id, newUserUpdate, function(results) {
-                        console.log(results);
-                        console.log('re-rendering')
-                        renderMain();
+                api.updateData(dataId, newData, function (result) {
+                    const userId = store.currentUser.id;
+                    console.log(userId);
+                    api.getUserById(userId, function(result) {
+                        console.log(result);
+                        store.currentUser = result;
+                        sortDataDate();
+                        detailsTab();
                     })
                 })
             })
         })
     }
 
-    const graphs = function() {
+    const settings = function () {
+        $('.edit-settings').on('click', function () {
+            if (store.currentUser) {
+                const html = `            
+                <div class="settings">
+                    <a href="#" class="settings__goals">Change Goals</a>
+                    <a href="#" class="settings__password">Change Password</a>
+                </div>`
+                render(html);
+            }
+        })
     }
-
-    const checkStore = function() {
-        $('.store').click(function(){
-            console.log(store.currentUser);
+    const changePassword = function () {
+        $('.app').on('click', '.settings__password',function () {
+            const html = `
+            <div class="settings">
+                <form class ="settings__form" action="submit">
+                    <label for="settings__old-password">Old Password</label>
+                    <input class="settings__old-password" type="password" required>
+                    <label for="settings__new-password">New Password</label>
+                    <input class="settings__new-password" type="password" required>
+                    <label for="settings__confirm-password">Confirm New Password</label>
+                    <input class="settings__confirm-password" type="password" required>
+                    <button class="settings__submit submit-data">Submit</button>
+                </form>
+            </div>
+            `
+            render(html);
         })
     }
 
+    const submitNewPassword = function () {
+        $('.app').on('submit', '.settings__form', function (event) {
+            event.preventDefault();
+            const oldPassword = $('.settings__old-password').val();
+            const newPassword = $('.settings__new-password').val();
+            const confirmPassword = $('.settings__confirm-password').val();
+            if (oldPassword === store.currentUser.password) {
+                if (newPassword === confirmPassword) {
+                    let newUserUpdate = {
+                        username: store.currentUser.username,
+                        password: newPassword,
+                        data: [],
+                        goal: store.currentUser.goal
+                    }
+                    store.currentUser.data.forEach((arr) => {
+                        newUserUpdate.data.push(arr.id)
+                    })
+                    api.updateUser(store.currentUser.id, newUserUpdate, function(results) {
+                        console.log(results);
+                        store.currentUser = results;
+                        alert('Password has been changed');
+                        macronator.sortDataDate();
+                        handleNotNew();
+                    })
+                } else {
+                    alert('New password does not match with the confirmed password, please try again.')
+                    $('.settings__confirm-password').val('');
+                    $('.settings__new-password').val('');
+                }
+            } else {
+                alert('Incorrect password, please try again.')
+                $('.settings__old-password').val('');
+            }
+        })
+    }
+
+    const changeGoals = function () {
+        $('.app').on('click', '.settings__goals', function () {
+            const html = `
+            <div class="settings">
+                <form class ="settings__goals-form" action="submit">
+                    <label for="settings__change-goals">Set Goal:</label>
+                    <select class="settings__change-goals" name="goals" size="3">
+                        <option value="Gain">Gain Muscle</option>
+                        <option value="Cut">Lose Fat</option>
+                        <option value="Maintain">Maintain</option>
+                    </select>
+                    <button class="submit-data">Submit</button>
+                </form>
+            </div>
+            `
+            render(html);
+        })
+    }
+
+    const submitChangeGoals = function () {
+        $('.app').on('submit', '.settings__goals-form', function (event) {
+            event.preventDefault();
+            const newGoal = $('.settings__change-goals').val();
+            if (newGoal !== null) {
+                let newUserUpdate = {
+                    username: store.currentUser.username,
+                    password: store.currentUser.password,
+                    data: [],
+                    goal: newGoal
+                }
+                store.currentUser.data.forEach((arr) => {
+                    newUserUpdate.data.push(arr.id)
+                })
+                api.updateUser(store.currentUser.id, newUserUpdate, function(results) {
+                    console.log(results);
+                    store.currentUser = results;
+                    alert('Goal has been updated');
+                    macronator.sortDataDate();
+                    handleNotNew();
+                })
+            } else {
+                alert('Please select a goal.')
+            }
+        })
+    }
+
+
     function bindEventListeners() {
+        submitChangeGoals();
+        changeGoals();
+        submitNewPassword();
+        changePassword();
+        settings();
+        editData();
+        clickDetailsTab();
+        deleteEntry();
+        selectDate();
         submitData();
-        checkStore();
+        home();
+        inputNew();
         login();
     }
 

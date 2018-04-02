@@ -51,6 +51,12 @@ router.post('/users', (req, res, next) => {
     }
 
     User.create(newUser)
+        .populate('data')
+        //Deep populate measurements
+        .populate({
+            path: 'data',
+            populate: { path: 'measurements'}
+        })
         .then((result) => {
             res.location(`${req.originalUrl}/${result.id}`).status(201).json(result);
         })
@@ -61,17 +67,26 @@ router.post('/users', (req, res, next) => {
 
 router.put('/users/:id', (req, res, next) => {
     const { id } = req.params;
-    const { username, password, data } = req.body;
+    const { username, password, data, goal } = req.body;
 
     const newUser = {
         username: username,
         password: password,
-        data: data
+        data: data,
+        goal: goal
     }
+
+    console.log(newUser);
 
     const options = { new: true }
 
     User.findByIdAndUpdate(id, newUser, options)
+        .populate('data')
+        //Deep populate measurements
+        .populate({
+            path: 'data',
+            populate: { path: 'measurements'}
+        })
         .then((result) => {
             if (result) {
                 res.json(result);

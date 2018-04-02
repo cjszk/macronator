@@ -1,0 +1,29 @@
+.login {
+    background-image: linear-gradient(to right, rgba($color-secondary, 0.6), rgba($color-secondary, 0.8));
+    border-radius: 10rem;
+    width: 80%;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 2rem);
+    text-align: center;
+    *{list-style: none;}
+    *{font-size: 1.4rem}
+    padding-bottom: 3rem;
+    animation: moveInSideMain 1s ease-out;
+    &__form {
+        &__button {
+            font-size: 1.2rem;
+            margin: 1rem 1rem;
+            padding: .5rem 1.5rem;
+            animation: moveInTop 1s ease-out;
+            border-radius: 10rem;
+            background-color: $color-black;
+            color: $color-white;
+            min-width: 10%;
+            max-width: 100%;
+        }
+        &__label {
+            color: white;
+        }
+    }
+}

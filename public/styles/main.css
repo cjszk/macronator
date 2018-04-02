@@ -11,6 +11,32 @@
     opacity: 1;
     transform: translateY(0rem); } }
 
+@keyframes moveInBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(10rem);
+    color: #000000; }
+  60% {
+    color: #000000; }
+  80% {
+    transform: translateY(-1rem); }
+  100% {
+    opacity: 1;
+    transform: translateY(0rem); } }
+
+@keyframes moveInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-10rem);
+    color: #000000; }
+  60% {
+    color: #000000; }
+  80% {
+    transform: translateX(1rem); }
+  100% {
+    opacity: 1;
+    transform: translateX(0rem); } }
+
 @keyframes moveInSideMain {
   0% {
     opacity: 0;
@@ -42,6 +68,14 @@ body {
   content: "";
   display: table;
   clear: both; }
+
+h3 {
+  font-size: 32px;
+  min-width: 5vw;
+  color: #ffffff; }
+
+h4 {
+  min-width: 5vw; }
 
 .footer {
   background-image: linear-gradient(to right, rgba(11, 42, 99, 0.8), rgba(0, 0, 0, 0.8));
@@ -97,6 +131,8 @@ body {
     list-style: none; }
   .home * {
     font-size: 1.4rem; }
+  .home__h3 {
+    font-size: 32px; }
   .home__left {
     text-align: right;
     margin-right: 5rem;
@@ -115,3 +151,208 @@ body {
     max-width: 50%; }
     .home__right * {
       color: grey; }
+
+.login {
+  background-image: linear-gradient(to right, rgba(11, 42, 99, 0.6), rgba(11, 42, 99, 0.8));
+  border-radius: 10rem;
+  width: 80%;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 2rem);
+  text-align: center;
+  padding-bottom: 3rem;
+  animation: moveInSideMain 1s ease-out; }
+  .login * {
+    list-style: none; }
+  .login * {
+    font-size: 1.4rem; }
+  .login__form__button {
+    font-size: 1.2rem;
+    margin: 1rem 1rem;
+    padding: .5rem 1.5rem;
+    animation: moveInTop 1s ease-out;
+    border-radius: 10rem;
+    background-color: #000000;
+    color: #ffffff;
+    min-width: 10%;
+    max-width: 100%; }
+  .login__form__label {
+    color: white; }
+
+.input {
+  background-image: linear-gradient(to right, rgba(11, 42, 99, 0.6), rgba(11, 42, 99, 0.8));
+  border-radius: 10rem;
+  width: 80%;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 2rem);
+  text-align: center;
+  padding-bottom: 3rem;
+  animation: moveInSideMain 1s ease-out; }
+  .input * {
+    font-size: 1.4rem; }
+  .input__h3 {
+    font-size: 32px; }
+  .input__h4 {
+    font-size: 32px;
+    color: #ffffff; }
+  .input__form {
+    vertical-align: center; }
+    .input__form__basic {
+      text-align: left;
+      margin-right: 5rem;
+      display: inline-block;
+      vertical-align: top;
+      min-width: 10%;
+      max-width: 50%; }
+      .input__form__basic * {
+        color: #14ad14; }
+    .input__form__measurements {
+      text-align: left;
+      margin-left: 5rem;
+      margin-right: 5rem;
+      display: inline-block;
+      vertical-align: top;
+      min-width: 10%;
+      max-width: 50%; }
+      .input__form__measurements * {
+        color: #14ad14; }
+    .input__form [class^="input__form__basic__"] {
+      display: block; }
+    .input__form [class^="input__form__measurements__"] {
+      display: block; }
+
+.submit-data {
+  position: relative;
+  margin-top: 200px;
+  font-size: 1.2rem;
+  padding: .5rem 1.5rem;
+  animation: moveInLeft 1s ease-out;
+  border-radius: 10rem;
+  background-color: #000000;
+  color: #ffffff;
+  min-width: 10%;
+  max-width: 100%; }
+  .submit-data:hover {
+    transform: scaleX(1.1) scaleY(1.1);
+    transition: .2s; }
+  .submit-data:active {
+    transform: scaleX(1) scaleY(1); }
+
+.details {
+  background-image: linear-gradient(to right, rgba(11, 42, 99, 0.6), rgba(11, 42, 99, 0.8));
+  border-radius: 10rem;
+  width: 80%;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 2rem);
+  text-align: center;
+  padding-bottom: 3rem; }
+  .details * {
+    list-style: none; }
+  .details * {
+    font-size: 1.4rem; }
+  .details__ul__li {
+    color: #ffffff; }
+    .details__ul__li__a {
+      color: #ffffff; }
+    .details__ul__li__delete {
+      font-size: 1.2rem;
+      margin: .5rem 2rem;
+      padding: .2rem 1.5rem;
+      border-radius: 10rem;
+      background-color: #000000;
+      color: #ffffff;
+      min-width: 10%;
+      max-width: 100%; }
+      .details__ul__li__delete:hover {
+        transform: scaleX(1.1) scaleY(1.1);
+        transition: .2s; }
+      .details__ul__li__delete:active {
+        transform: scaleX(1) scaleY(1); }
+
+ul li a b {
+  color: #14ad14; }
+
+.edit {
+  background-image: linear-gradient(to right, rgba(11, 42, 99, 0.6), rgba(11, 42, 99, 0.8));
+  border-radius: 10rem;
+  width: 80%;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 2rem);
+  text-align: center;
+  padding-bottom: 3rem;
+  animation: moveInSideMain 1s ease-out; }
+  .edit * {
+    font-size: 1.4rem; }
+  .edit__h3 {
+    font-size: 32px; }
+  .edit__h4 {
+    font-size: 32px;
+    color: #ffffff; }
+  .edit__form {
+    vertical-align: center; }
+    .edit__form__basic {
+      text-align: left;
+      margin-right: 5rem;
+      display: inline-block;
+      vertical-align: top;
+      min-width: 10%;
+      max-width: 50%; }
+      .edit__form__basic * {
+        color: #14ad14; }
+    .edit__form__measurements {
+      text-align: left;
+      margin-left: 5rem;
+      margin-right: 5rem;
+      display: inline-block;
+      vertical-align: top;
+      min-width: 10%;
+      max-width: 50%; }
+      .edit__form__measurements * {
+        color: #14ad14; }
+    .edit__form [class^="edit__form__basic__"] {
+      display: block; }
+    .edit__form [class^="edit__form__measurements__"] {
+      display: block; }
+
+.settings {
+  background-image: linear-gradient(to right, rgba(11, 42, 99, 0.6), rgba(11, 42, 99, 0.8));
+  border-radius: 10rem;
+  width: 80%;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%, 2rem);
+  text-align: center;
+  padding-bottom: 3rem;
+  animation: moveInSideMain 1s ease-out; }
+  .settings * {
+    list-style: none; }
+  .settings * {
+    font-size: 2rem; }
+  .settings__goals {
+    display: block;
+    color: #ffffff; }
+  .settings__password {
+    display: block;
+    color: #ffffff; }
+  .settings__old-password {
+    margin-left: auto;
+    margin-right: auto;
+    display: block; }
+  .settings__new-password {
+    margin-left: auto;
+    margin-right: auto;
+    display: block; }
+  .settings__confirm-password {
+    margin-left: auto;
+    margin-right: auto;
+    display: block; }
+  .settings__change-goals {
+    margin-left: auto;
+    margin-right: auto;
+    display: block; }
+
+.settings form label {
+  color: #ffffff; }

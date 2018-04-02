@@ -1,0 +1,47 @@
+.edit {
+    background-image: linear-gradient(to right, rgba($color-secondary, 0.6), rgba($color-secondary, 0.8));
+    border-radius: 10rem;
+    width: 80%;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 2rem);
+    text-align: center;
+    *{font-size: 1.4rem}
+    padding-bottom: 3rem;
+    animation: moveInSideMain 1s ease-out;
+    &__h3 {
+        font-size: 32px;
+    }
+    &__h4 {
+        font-size: 32px;
+        color: $color-white;
+    }
+    &__form {
+        vertical-align: center;
+        &__basic {
+            text-align: left;
+            margin-right: 5rem;
+            display: inline-block;
+            vertical-align: top;
+            min-width: 10%;
+            max-width: 50%;
+            *{color: $color-lime-green;}
+        }
+        &__measurements {
+            text-align: left;
+            margin-left: 5rem;
+            margin-right: 5rem;
+            display: inline-block;
+            vertical-align: top;
+            min-width: 10%;
+            max-width: 50%;
+            *{color: $color-lime-green;}
+        }
+        [class^="edit__form__basic__"] {
+            display: block;
+        }
+        [class^="edit__form__measurements__"] {
+            display: block;
+        }
+    }
+}

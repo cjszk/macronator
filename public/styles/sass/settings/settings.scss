@@ -1,0 +1,44 @@
+.settings {
+    background-image: linear-gradient(to right, rgba($color-secondary, 0.6), rgba($color-secondary, 0.8));
+    border-radius: 10rem;
+    width: 80%;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%, 2rem);
+    text-align: center;
+    *{list-style: none;}
+    *{font-size: 2rem}
+    padding-bottom: 3rem;
+    animation: moveInSideMain 1s ease-out;
+    &__goals {
+        display: block;
+        color: $color-white;
+    }
+    &__password {
+        display: block;
+        color: $color-white;
+    }
+    &__old-password {
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+    &__new-password {
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+    &__confirm-password {
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+    &__change-goals {
+        margin-left: auto;
+        margin-right: auto;
+        display: block;
+    }
+}
+.settings form label {
+    color: $color-white;
+}

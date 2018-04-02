@@ -24,3 +24,13 @@ body {
 .row {
     @include clearfix;
 }
+
+h3 {
+    font-size: 32px;
+    min-width: 5vw;
+    color: $color-white;
+}
+
+h4 {
+    min-width: 5vw;
+}
