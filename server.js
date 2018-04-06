@@ -17,7 +17,7 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://chris:macronator@ds127
 
 const User = require('./models/User.model')
 
-const port = 8080;
+PORT = process.env.PORT || 8080;
 
 app.use(morgan(process.env.NODE_ENV === 'development' ? 'dev' : 'common', {
     skip: () => process.env.NODE_ENV === 'test'
@@ -62,6 +62,6 @@ mongoose.connect(MONGODB_URI)
     console.error(err);
     });
 
-app.listen(port, function() {
-    console.log(`App initiated and listing on ${port}.`)
+app.listen(PORT, function() {
+    console.log(`App initiated and listing on ${PORT}.`)
 })
