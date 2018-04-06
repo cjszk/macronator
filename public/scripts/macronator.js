@@ -153,6 +153,7 @@ const macronator = (function() {
                             store.currentUser = result
                             changeGoalTab();
                             populateNav();
+                            videoTwo();
                         })
                     }
                 }
