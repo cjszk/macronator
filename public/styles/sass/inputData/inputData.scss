@@ -1,6 +1,6 @@
 .input {
-    background-image: linear-gradient(to right, rgba($color-secondary, 0.6), rgba($color-secondary, 0.8));
-    border-radius: 10rem;
+    background-image: linear-gradient(to right, rgba($color-two, 0.8), rgba($color-one, 1));
+    border-radius: 1rem;
     width: 80%;
     position: relative;
     left: 50%;
@@ -17,6 +17,9 @@
         color: $color-white;
     }
     &__form {
+        label {
+            color: $color-white;
+        }
         vertical-align: center;
         &__basic {
             text-align: left;
@@ -25,7 +28,7 @@
             vertical-align: top;
             min-width: 10%;
             max-width: 50%;
-            *{color: $color-lime-green;}
+            color: $color-white;
         }
         &__measurements {
             text-align: left;
@@ -35,7 +38,7 @@
             vertical-align: top;
             min-width: 10%;
             max-width: 50%;
-            *{color: $color-lime-green;}
+            color: $color-white;
         }
         [class^="input__form__basic__"] {
             display: block;
@@ -51,9 +54,8 @@
     margin-top: 200px;
     font-size: 1.2rem;
     padding: .5rem 1.5rem;
-    animation: moveInLeft 1s ease-out;
     border-radius: 10rem;
-    background-color: $color-black;
+    background-color: $color-one;
     color: $color-white;
     min-width: 10%;
     max-width: 100%;
@@ -65,4 +67,9 @@
     &:active {
         transform: scaleX(1) scaleY(1);
     }
+}
+
+.small-text {
+    line-height: 30%;
+    font-size: .8rem;
 }

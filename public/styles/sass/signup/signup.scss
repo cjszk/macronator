@@ -1,6 +1,6 @@
 .sign-up {
-    background-image: linear-gradient(to right, rgba($color-secondary, 0.6), rgba($color-secondary, 0.8));
-    border-radius: 10rem;
+    background-image: linear-gradient(to right, rgba($color-two, 0.8), rgba($color-one, 1));
+    border-radius: 1rem;
     width: 80%;
     position: relative;
     left: 50%;
@@ -9,6 +9,7 @@
     *{list-style: none;}
     *{font-size: 1.4rem}
     padding-bottom: 3rem;
+    animation: moveInRightMain 1s ease-out;
     &__form {
         &__username {
             margin-left: auto;
@@ -29,9 +30,8 @@
             font-size: 1.2rem;
             margin: 1rem 1rem;
             padding: .5rem 1.5rem;
-            animation: moveInTop 1s ease-out;
             border-radius: 10rem;
-            background-color: $color-black;
+            background-color: $color-one;
             color: $color-white;
             min-width: 10%;
             max-width: 100%;
@@ -45,25 +45,21 @@
 
 .sign-up-confirm {
     font-size: 1.2rem;
-    margin-top: 1rem;
+    margin: 1rem;
     padding: .5rem 1.5rem;
-    animation: moveInTop 1s ease-out;
     border-radius: 10rem;
-    background-color: $color-black;
+    background-color: $color-one;
     color: $color-white;
     min-width: 10%;
     max-width: 100%;
 }
 
 .return-login {
+    display: inline-block;
     font-size: 1.2rem;
-    position: fixed;
-    margin-left: 12rem;
-    margin-top: -8rem;
     padding: .5rem 1.5rem;
-    animation: moveInTop 1s ease-out;
     border-radius: 10rem;
-    background-color: $color-black;
+    background-color: $color-one;
     color: $color-white;
     min-width: 10%;
     max-width: 100%;

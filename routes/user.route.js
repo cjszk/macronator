@@ -48,33 +48,60 @@ router.post('/users', (req, res, next) => {
     const newUser = {
         username: username,
         password: password,
-        data: [],
-        goal: "Maintain"
     }
 
-    User.create(newUser)
-        .then((result) => {
-            res.location(`${req.originalUrl}/${result.id}`).status(201).json(result);
+    // User.create(newUser)
+    //     .then((result) => {
+    //         res.location(`${req.originalUrl}/${result.id}`).status(201).json(result);
+    //     })
+    //     .catch((error) => {
+    //         next(error);
+    //     })
+
+    User.find()
+    .then((results) => {
+        let check = false;
+        results.forEach((user) => {
+            if (user.username === username) {
+                check = true;
+            }
         })
-        .catch((error) => {
-            next(error);
-        })
+        if (check === true) {
+            const err = new Error('That username already exists!');
+            err.status = 400;
+            return next(err);
+        } else {
+
+            return User.hashPassword(password)
+                .then(digest => {
+                    const newUser = {
+                        data: [],
+                        goal: "Maintain",
+                        username: username,
+                        password: digest
+                    }
+                    User.create(newUser)
+                        .then((result) => {
+                            console.log(newUser);
+                            res.location(`${req.originalUrl}/${result.id}`).status(201).json(result);
+                        })
+                        .catch((err) => next(err));
+                })
+        }
+    })
 })
 
 router.put('/users/:id', (req, res, next) => {
     const { id } = req.params;
     const { username, password, data, goal } = req.body;
+    const options = { new: true }
 
-    const newUser = {
+    let newUser = {
         username: username,
         password: password,
         data: data,
         goal: goal
     }
-
-    console.log(newUser);
-
-    const options = { new: true }
 
     User.findByIdAndUpdate(id, newUser, options)
         .populate('data')
@@ -84,6 +111,7 @@ router.put('/users/:id', (req, res, next) => {
             populate: { path: 'measurements'}
         })
         .then((result) => {
+            console.log(result);
             if (result) {
                 res.json(result);
             }
@@ -91,6 +119,38 @@ router.put('/users/:id', (req, res, next) => {
         .catch((error) => {
             next(error);
         })
+});
+
+router.put('/password/:id', (req, res, next) => {
+    const { id } = req.params;
+    const { username, password, data, goal } = req.body;
+    const options = { new: true }
+
+    return User.hashPassword(password)
+    .then(digest => {
+        const newUser = {
+            data: data,
+            goal: "Maintain",
+            username: username,
+            password: digest
+        }
+        User.findByIdAndUpdate(id, newUser, options)
+            .populate('data')
+            //Deep populate measurements
+            .populate({
+                path: 'data',
+                populate: { path: 'measurements'}
+            })
+            .then((result) => {
+                if (result) {
+                    console.log(result);
+                    res.json(result);
+                }
+            })
+            .catch((error) => {
+                next(error);
+            })
+    })
 });
 
 router.delete('/users/:id', (req, res, next) => {

@@ -1,6 +1,6 @@
 .settings {
-    background-image: linear-gradient(to right, rgba($color-secondary, 0.6), rgba($color-secondary, 0.8));
-    border-radius: 10rem;
+    background-image: linear-gradient(to right, rgba($color-two, 0.8), rgba($color-one, 1));
+    border-radius: 1rem;
     width: 80%;
     position: relative;
     left: 50%;
@@ -19,16 +19,19 @@
         color: $color-white;
     }
     &__old-password {
+        max-width: 90%;
         margin-left: auto;
         margin-right: auto;
         display: block;
     }
     &__new-password {
+        max-width: 90%;
         margin-left: auto;
         margin-right: auto;
         display: block;
     }
     &__confirm-password {
+        max-width: 90%;
         margin-left: auto;
         margin-right: auto;
         display: block;

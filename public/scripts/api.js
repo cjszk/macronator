@@ -20,6 +20,17 @@ const api = (function() {
         console.log('ran through updateId')
     }
 
+    const updatePassword = function(id, updateData, callback) {
+        $.ajax({
+            url: `${BASE_URL}/password/${id}`,
+            method: 'PUT',
+            contentType: 'application/json',
+            data: JSON.stringify(updateData),
+            success: callback
+        })
+        console.log('ran through updateId')
+    }
+
     const updateData = function(id, updateData, callback) {
         $.ajax({
             url: `${BASE_URL}/data/${id}`,
@@ -79,7 +90,22 @@ const api = (function() {
         })
     }
 
+    const login = function(data, callback) {
+        $.ajax({
+            url: `${BASE_URL}/login/`,
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: callback,
+            statusCode: {
+                401:function() {alert(`Access Denied: Incorrect Password`)}
+            }
+        })
+    }
+
     return {
+        updatePassword,
+        login,
         postUser,
         updateData,
         updateMeasurements,

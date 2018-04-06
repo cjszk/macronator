@@ -1,6 +1,6 @@
 .edit {
-    background-image: linear-gradient(to right, rgba($color-secondary, 0.6), rgba($color-secondary, 0.8));
-    border-radius: 10rem;
+    background-image: linear-gradient(to right, rgba($color-two, 0.8), rgba($color-one, 1));
+    border-radius: 1rem;
     width: 80%;
     position: relative;
     left: 50%;
@@ -8,7 +8,7 @@
     text-align: center;
     *{font-size: 1.4rem}
     padding-bottom: 3rem;
-    animation: moveInSideMain 1s ease-out;
+    animation: moveInBottomMain 1s ease-out;
     &__h3 {
         font-size: 32px;
     }
@@ -17,6 +17,9 @@
         color: $color-white;
     }
     &__form {
+        label {
+            color: $color-white;
+        }
         vertical-align: center;
         &__basic {
             text-align: left;
@@ -25,7 +28,6 @@
             vertical-align: top;
             min-width: 10%;
             max-width: 50%;
-            *{color: $color-lime-green;}
         }
         &__measurements {
             text-align: left;
@@ -35,7 +37,6 @@
             vertical-align: top;
             min-width: 10%;
             max-width: 50%;
-            *{color: $color-lime-green;}
         }
         [class^="edit__form__basic__"] {
             display: block;
@@ -44,4 +45,9 @@
             display: block;
         }
     }
+}
+
+.small-text {
+    line-height: 30%;
+    font-size: .8rem;
 }

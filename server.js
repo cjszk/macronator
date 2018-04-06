@@ -8,6 +8,9 @@ const app = express();
 const userRouter = require('./routes/user.route');
 const dataRouter = require('./routes/data.route');
 const measurementRouter = require('./routes/measurement.route');
+const authRouter = require('./routes/auth');
+const passport = require('passport');
+const localStrategy = require('./passport/local');
 
 // const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/macro-coach';
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://chris:macronator@ds127958.mlab.com:27958/macronator';
@@ -24,9 +27,12 @@ app.use(express.static('public'));
 
 app.use(express.json());
 
+passport.use(localStrategy);
+
 app.use('/', userRouter);
 app.use('/', dataRouter);
 app.use('/', measurementRouter);
+app.use('/', authRouter);
 
 //
 app.use(function (req, res, next) {

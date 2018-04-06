@@ -1,0 +1,33 @@
+.bg-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: -2;
+    background-image: linear-gradient(to right, rgba($color-one, 1), rgba($color-black, 1));
+
+    &__content {
+        opacity: .15;
+        width: 100%;
+        object-fit: cover;
+    }
+
+}
+
+.bg-video-main {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: -3;
+    background-image: linear-gradient(to right, rgba($color-one, 1), rgba($color-black, 1));
+
+    &__content {
+        opacity: .15;
+        width: 100%;
+        object-fit: cover;
+    }
+
+}

@@ -1,34 +1,35 @@
 .home{
-    background-image: linear-gradient(to right, rgba($color-secondary, 0.6), rgba($color-secondary, 0.8));
-    border-radius: 10rem;
+    background-image: linear-gradient(to right, rgba($color-two, 0.8), rgba($color-one, 1));
+    border-radius: 1rem;
     width: 80%;
     position: relative;
     left: 50%;
+    margin-bottom: 5rem;
     transform: translate(-50%, 2rem);
     text-align: center;
     *{list-style: none;}
     *{font-size: 1.4rem}
     padding-bottom: 3rem;
-    animation: moveInSideMain 1s ease-out;
+    animation: moveInLeftMain 1s ease-out;
     &__h3 {
         font-size: 32px;
     }
     &__left {
-        text-align: right;
-        margin-right: 5rem;
+        text-align: left;
+        margin: 1rem;
+        max-width: 97%;
         display: inline-block;
         vertical-align: top;
         min-width: 10%;
-        max-width: 50%;
-        *{color: $color-lime-green;}
+        *{color: $color-white;}
     }
     &__right {
         text-align: left;
-        margin-left: 5rem;
+        margin: 1rem;
+        max-width: 97%;
         display: inline-block;
         vertical-align: top;
         min-width: 10%;
-        max-width: 50%;
-        *{color: grey}
+        *{color: $color-white;}
     }
 }

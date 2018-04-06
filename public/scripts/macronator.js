@@ -4,8 +4,26 @@ const macronator = (function() {
         $('.app').html(html);
     }
 
+    const populateNav = function () {
+        
+        $('.header__nav').html(`
+            <button class="header__btn header__home">Home</button>
+            <button class="header__btn input-data">Input New Data</button> 
+            <button class="header__btn view-edit-details">View/Edit Details</button>
+           
+            <button class="header__btn edit-settings">Settings</button>
+        `)
+    }
+
     const loginScreen = function () {
         let html = `
+        <div class="bg-video">
+            <video class="bg-video__content" autoplay muted loop>
+                <source src="styles/images/Workout.mp4">
+                <source src="styles/images/Workout.webm">
+                    Your browser is not supported!
+            </video>
+        </div>
         <div class="login">
             <form class="login__form">
                 <label class="login__form__label">Login Username</label>
@@ -24,37 +42,57 @@ const macronator = (function() {
         render(html);
     }
 
+    const videoTwo = function () {
+       $('.bg-video-main').html(`
+        <video class="bg-video-main__content" autoplay muted loop>
+            <source src="styles/images/City-Nights.mp4">
+            <source src="styles/images/City-Nights.webm">
+                Your browser is not supported!
+        </video>
+       `) 
+    }
+
     const login = function () {
         $('.app').on('submit', '.login__form', function(event) {
             event.preventDefault();
             const loginUsername = $('.login__form__username').val();
             const loginPassword = $('.login__form__password').val();
-            $('.password-input').val('');
+            const loginUser = {
+                username: loginUsername,
+                password: loginPassword
+            }
+            $('.login__form__password').val('');
             let found = false;
-            api.getUsers(function(results) {
-                found = false;
+            let falsePassword = false;
+            api.getUsers((results) => {
                 results.forEach((user) => {
                     if (user.username === loginUsername) {
-                        if (user.password === loginPassword) {
-                            console.log(user);
-                            store.currentUser = user;
-                        } else {
-                            found = true;
-                            alert('Incorrect Password, please try again.')
-                        }
-                    } 
+                        found = true;
+                    }
                 })
-                if (!store.currentUser && found === false) {
-                    alert('User not found, please confirm that your information is correct.')
+                if (found === false) {
+                    alert(`Username ${loginUsername} not found, please check your username input.`)
+                } else {
+                    api.login(loginUser, function(results) {
+                        api.getUsers(function(results) {
+                            results.forEach((user) => {
+                                if (user.username === loginUsername) {
+                                        console.log(user);
+                                        store.currentUser = user;
+                                } 
+                            })
+                            if (store.currentUser) {
+                                macronator.sortDataDate();
+                                populateNav();
+                                videoTwo();
+                                macronator.renderMain();
+                            } else {
+                                falsePassword = true;
+                            }
+                        })
+                    })
                 }
             })
-        setTimeout(function() {
-            if (store.currentUser) {
-                console.log(store.currentUser);
-                macronator.sortDataDate();
-                macronator.renderMain();
-            }
-        }, 1000)
         })
     }
 
@@ -108,12 +146,13 @@ const macronator = (function() {
                         const newUser = {
                             username: username,
                             password: password,
+                            data: [],
+                            goal: "Maintain"
                         }
                         api.postUser(newUser, function(result) {
-                            console.log(result);
                             store.currentUser = result
                             changeGoalTab();
-                            console.log(store.currentUser);
+                            populateNav();
                         })
                     }
                 }
@@ -222,14 +261,12 @@ const macronator = (function() {
             }
             cryptoDateArray.push(newData)
         }
-        console.log(cryptoDateArray);
         let cryptoDateArrayTemp;
         //If cryptoDateArray > 30, get only the most recent 30 entries instead.
         if (cryptoDateArray.length > 30) {
             cryptoDateArrayTemp = cryptoDateArray.slice(cryptoDateArray.length-30, cryptoDateArray.length); 
             cryptoDateArray = cryptoDateArrayTemp 
         }
-        console.log(store.currentUser)
         //Calculate TDEE
         let calculatedTDEE;
         let advised;
@@ -250,7 +287,6 @@ const macronator = (function() {
             calculatedTDEE = Math.round(TDEEArray.reduce((a, b) => {
                return a + b
             })/TDEEArray.length)
-            console.log(calculatedTDEE)
         } else {
             let weightFactor = `${measurements.weight}`;
             calculatedTDEE = ( weightFactor * 15);
@@ -289,23 +325,23 @@ const macronator = (function() {
             <div class="home">
                 <h3 class="home__h3">Overview</h3>
                 <div class="home__left col-5">
-                    <div class="home__left__tdee"><p>Your Current Estimated TDEE: <b>${calculatedTDEE} (kcal)</b></p></div>
-                    <div class="home__left__accuracy"><p>Accuracy of Calculations: <b>${accuracy}</b></p></div>
-                    <div class="home__left__current-weight"><p>Most Recent Weigh-In: <b>${measurements.weight} lbs</b></p></div>
-                    <div class="home__left__goal"><p>Current Goal: <b>${currentUser.goal}</b></p></div>
-                    <div class="home__left__advice-calories"><p>Advised Calorie Consumption: <b>${advised} kcal</b> </p></div>
-                    <div class="home__left__advice-macros">Example Macro Distribution: <b>${protein}g Protein / ${carbs}g Carbs / ${fat}g Fat</b></div>
+                    <div class="home__left__tdee"><p>Your Current Estimated TDEE: <b class="bold-color">${calculatedTDEE} (kcal)</b></p></div>
+                    <div class="home__left__accuracy"><p>Accuracy of Calculations: <b class="bold-color">${accuracy}</b></p></div>
+                    <div class="home__left__current-weight"><p>Most Recent Weigh-In: <b class="bold-color">${measurements.weight} lbs</b></p></div>
+                    <div class="home__left__goal"><p>Current Goal: <b class="bold-color">${currentUser.goal}</b></p></div>
+                    <div class="home__left__advice-calories"><p>Advised Calorie Consumption: <b class="bold-color">${advised} kcal</b> </p></div>
+                    <div class="home__left__advice-macros">Example Macro Distribution: <b class="bold-color">${protein}g Protein / ${carbs}g Carbs / ${fat}g Fat</b></div>
                 </div>
                 <div class="home__right col-5">
                     <div class="home__right__body-stats">
-                        <ul class="home__right__body-stats__list"><b><u>Most Recent Body Measurements</u></b>
-                            <li>Shoulders: <b>${measurements.shoulders}"</b></li>
-                            <li>Chest: <b>${measurements.chest}"</b></li>
-                            <li>Waist 2" above: <b>${measurements.waistAbove}"</b></li>
-                            <li>Waist (at navel): <b>${measurements.waist}"</b></li>
-                            <li>Waist 2" below: <b>${measurements.waistBelow}"</b></li>
-                            <li>Hips: <b>${measurements.hips}"</b></li>
-                            <li>Quadriceps: <b>${measurements.quads}"</b></li>
+                        <ul class="home__right__body-stats__list"><b class="bold-color"><u>Most Recent Body Measurements</u></b>
+                            <li>Shoulders: <b class="bold-color">${measurements.shoulders}"</b></li>
+                            <li>Chest: <b class="bold-color">${measurements.chest}"</b></li>
+                            <li>Waist 2" above: <b class="bold-color">${measurements.waistAbove}"</b></li>
+                            <li>Waist (at navel): <b class="bold-color">${measurements.waist}"</b></li>
+                            <li>Waist 2" below: <b class="bold-color">${measurements.waistBelow}"</b></li>
+                            <li>Hips: <b class="bold-color">${measurements.hips}"</b></li>
+                            <li>Quadriceps: <b class="bold-color">${measurements.quads}"</b></li>
                         </ul>
                     </div>
                 </div>
@@ -316,7 +352,7 @@ const macronator = (function() {
     
 
     const home = function () {
-        $('.header__home').on('click', function() {
+        $('.header__nav').on('click', '.header__home', function() {
             renderMain();
         })
     }
@@ -329,11 +365,13 @@ const macronator = (function() {
             <form class="input__form">
                 <div class="input__form__basic">
                     <h4 class="input__h4">Basic Info</h4>
+                    <br>
                     <label>Date</label>
                     <input class="input__form__basic__date" type="date" required>
-                    <label>Calories Consumed</label>
+                    <br>
+                    <label>Calories Consumed <span class="small-text color-white"><br> On average per day (up until current date, do not include the current day's amount)</span></label>
                     <input type="number" class="input__form__basic__calories" max="15000">
-                    <label>Weight</label>
+                    <label>Most Recent Weigh-in</label>
                     <input type="number" class="input__form__basic__weight" max="600">
                 </div>
                 <button class="submit-data" type="submit">Submit</button>
@@ -362,7 +400,7 @@ const macronator = (function() {
     }
 
     const inputNew = function () {
-        $('.input-data').on('click', function() {
+        $('.header__nav').on('click', '.input-data', function() {
             inputNewForm();
         })
     }
@@ -376,7 +414,6 @@ const macronator = (function() {
         let liStrings = [];
         store.currentUser.data.forEach((item) => {
             let date = item.date.slice(0, 10)
-            console.log(item.id);
             liStrings.push(`<li class="details__ul__li"><a 
             measurements-id="${item.measurements.id}"
             data-id="${item.id}" 
@@ -389,11 +426,11 @@ const macronator = (function() {
             hips="${item.measurements.hips}"
             quads="${item.measurements.quads}"
              href="#" class="details__ul__li__a">
-             Date: <b>${date}</b> Calories: <b>${item.calories}</b> Weight: <b>${item.weight}</b>
+             Date: <b class="bold-color">${date}</b> Calories: <b class="bold-color">${item.calories}</b> Weight: <b class="bold-color">${item.weight}</b>
              </a><button id="${item.id}" class="details__ul__li__delete">Delete</button></li>`)
         });
-        let joinedLi = liStrings.join('');
-        console.log(joinedLi);
+        let joinedLi = liStrings.reverse().join('');
+
         let html = `
         <div class="details">
             <ul class="details__ul">
@@ -408,7 +445,7 @@ const macronator = (function() {
     }
 
     const clickDetailsTab = function () {
-        $('.view-edit-details').on('click', function() {
+        $('.header__nav').on('click', '.view-edit-details', function() {
             detailsTab();
         })
     }
@@ -417,7 +454,6 @@ const macronator = (function() {
         $('.app').on('click', '.details__ul__li__delete', function() {
             const id = $(this).attr('id');
             api.deleteData(id, function () {
-                console.log(`Deleted ${id}`)
                 let dataArr = [];
                 store.currentUser.data.forEach(function(item) {
                     if (item.id !== id) {
@@ -426,7 +462,6 @@ const macronator = (function() {
                 })
                 store.currentUser.data = dataArr;
                 macronator.sortDataDate();
-                console.log(store.currentUser);
                 detailsTab();
             })
         })
@@ -446,7 +481,6 @@ const macronator = (function() {
             const waistBelow = $(this).attr('waistBelow');
             const hips = $(this).attr('hips');
             const quads = $(this).attr('quads');
-            console.log($(this).attr('measurements-id'));
             const html = `
             <div class="edit" data-id="${$(this).attr('data-id')}" measurements-id="${$(this).attr('measurements-id')}">
             <h3 class="edit__h3">Edit New Data</h3>
@@ -455,7 +489,7 @@ const macronator = (function() {
                     <h4 class="edit__h4">Basic Info</h4>
                     <label>Date</label>
                     <input id="edit__form__basic__date" class="edit__form__basic__date" type="date" value="${date}" required>
-                    <label>Calories Consumed</label>
+                    <label>Calories Consumed <span class="small-text color-white"><br> On average per day (up until current date, do not include the current day's amount)</span></label>
                     <input type="number" class="edit__form__basic__calories" value="${calories}" max="15000">
                     <label>Weight</label>
                     <input type="number" class="edit__form__basic__weight" value=${weight} max="600">
@@ -498,7 +532,6 @@ const macronator = (function() {
         $('.app').on('submit', '.input__form', function(event) {
             event.preventDefault();
             const date = $('.input__form__basic__date').val();
-            console.log(date);
             const calories = $('.input__form__basic__calories').val();
             const weight = $('.input__form__basic__weight').val();
             const shoulders = $('.input__form__measurements__shoulders').val();
@@ -537,20 +570,16 @@ const macronator = (function() {
                     hips: hips,
                     quads: quads
                 }
-                console.log(newMeasurements);
                 //post the measurement data, then post the data data along with measurement ID, then update the data ID to the user data
                 api.postMeasurement(newMeasurements, function(results) {
                     let measurementsId = results.id
-                    console.log(measurementsId);
                     const newData = {
                         date: date,
                         weight: weight,
                         calories: calories,
                         measurements: measurementsId
                     }
-                    console.log(newData);
                     api.postData(newData, function(results) {
-                        console.log(results);
                         let newDataId = results.id
                         currentUser.data.push()
                         let newUserUpdate = {
@@ -563,10 +592,7 @@ const macronator = (function() {
                             newUserUpdate.data.push(arr.id)
                         })
                         newUserUpdate.data.push(newDataId);
-                        console.log(newUserUpdate);
-                        console.log(currentUser.id);
                         api.updateUser(currentUser.id, newUserUpdate, function(results) {
-                            console.log(results);
                             store.currentUser = results;
                             macronator.sortDataDate();
                         })
@@ -602,7 +628,6 @@ const macronator = (function() {
             const dataId = $('.edit').attr('data-id');
             const measurementsId = $('.edit').attr('measurements-id')
             api.updateMeasurements(measurementsId, newMeasurements, function (result) {
-                console.log(result)
                 const newData = {
                     date: date,
                     weight: weight,
@@ -611,9 +636,7 @@ const macronator = (function() {
                 }
                 api.updateData(dataId, newData, function (result) {
                     const userId = store.currentUser.id;
-                    console.log(userId);
                     api.getUserById(userId, function(result) {
-                        console.log(result);
                         store.currentUser = result;
                         sortDataDate();
                         detailsTab();
@@ -624,7 +647,7 @@ const macronator = (function() {
     }
 
     const settings = function () {
-        $('.edit-settings').on('click', function () {
+        $('.header__nav').on('click', '.edit-settings', function () {
             if (store.currentUser) {
                 const html = `            
                 <div class="settings">
@@ -660,33 +683,75 @@ const macronator = (function() {
             const oldPassword = $('.settings__old-password').val();
             const newPassword = $('.settings__new-password').val();
             const confirmPassword = $('.settings__confirm-password').val();
-            if (oldPassword === store.currentUser.password) {
-                if (newPassword === confirmPassword) {
-                    let newUserUpdate = {
-                        username: store.currentUser.username,
-                        password: newPassword,
-                        data: [],
-                        goal: store.currentUser.goal
-                    }
-                    store.currentUser.data.forEach((arr) => {
-                        newUserUpdate.data.push(arr.id)
-                    })
-                    api.updateUser(store.currentUser.id, newUserUpdate, function(results) {
-                        console.log(results);
-                        store.currentUser = results;
-                        alert('Password has been changed');
-                        macronator.sortDataDate();
-                        handleNotNew();
-                    })
-                } else {
-                    alert('New password does not match with the confirmed password, please try again.')
-                    $('.settings__confirm-password').val('');
-                    $('.settings__new-password').val('');
-                }
-            } else {
-                alert('Incorrect password, please try again.')
-                $('.settings__old-password').val('');
+            //Login, then reset the password.
+            const userInfo = {
+                username: store.currentUser.username,
+                password: oldPassword
             }
+            let newUserUpdate = {
+                username: store.currentUser.username,
+                password: newPassword,
+                data: [],
+                goal: store.currentUser.goal
+            }
+            store.currentUser.data.forEach((arr) => {
+                newUserUpdate.data.push(arr.id)
+            })
+            const userId = store.currentUser.id;
+            if (newPassword === confirmPassword) {
+                api.login(userInfo, function(results) {
+                    if (results) {
+                        api.updatePassword(userId, newUserUpdate, function() {
+                            alert('Password has been changed');
+                            api.getUsers(function(results) {
+                                $('.settings__old-password').val('');
+                                $('.settings__confirm-password').val('');
+                                $('.settings__new-password').val('');
+                                results.forEach((user) => {
+                                    if (user.username === store.currentUser) {
+                                        store.currentUser = user;
+                                        sortDataDate();
+                                        renderMain();
+                                    } 
+                                })
+                            })
+                        })
+                    } else {
+                        alert('Former password is incorrect.');
+                        $('.settings__old-password').val('');
+                    }
+                })
+            } else {
+                alert('New password does not match with the confirmed password, please try again.')
+                $('.settings__confirm-password').val('');
+                $('.settings__new-password').val('');
+            }
+            // if (oldPassword === store.currentUser.password) {
+            //     if (newPassword === confirmPassword) {
+            //         let newUserUpdate = {
+            //             username: store.currentUser.username,
+            //             password: newPassword,
+            //             data: [],
+            //             goal: store.currentUser.goal
+            //         }
+            //         store.currentUser.data.forEach((arr) => {
+            //             newUserUpdate.data.push(arr.id)
+            //         })
+            //         api.updateUser(store.currentUser.id, newUserUpdate, function(results) {
+            //             store.currentUser = results;
+            //             alert('Password has been changed');
+            //             macronator.sortDataDate();
+            //             handleNotNew();
+            //         })
+            //     } else {
+            //         alert('New password does not match with the confirmed password, please try again.')
+            //         $('.settings__confirm-password').val('');
+            //         $('.settings__new-password').val('');
+            //     }
+            // } else {
+            //     alert('Incorrect password, please try again.')
+            //     $('.settings__old-password').val('');
+            // }
         })
     }
 
@@ -728,7 +793,6 @@ const macronator = (function() {
                     newUserUpdate.data.push(arr.id)
                 })
                 api.updateUser(store.currentUser.id, newUserUpdate, function(results) {
-                    console.log(results);
                     store.currentUser = results;
                     alert('Goal has been updated');
                     macronator.sortDataDate();
