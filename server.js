@@ -13,8 +13,8 @@ const passport = require('passport');
 const localStrategy = require('./passport/local');
 
 // const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/macro-coach';
-// const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://chris:macronator@ds127958.mlab.com:27958/macronator';
-const MONGODB_URI = 'mongodb://chris:macronator@ds127958.mlab.com:27958/macronator';
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://chris:macronator@ds127958.mlab.com:27958/macronator';
+// const MONGODB_URI = 'mongodb://chris:macronator@ds127958.mlab.com:27958/macronator';
 
 const User = require('./models/User.model')
 
