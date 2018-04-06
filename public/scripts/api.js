@@ -1,5 +1,6 @@
 const api = (function() {
-    BASE_URL = 'http://localhost:8080'
+    //BASE_URL = 'http://localhost:8080'
+    BASE_URL = 'https://macronator.herokuapp.com'
     
     const getUsers = function(callback) {
         $.getJSON(`${BASE_URL}/users`, callback);
