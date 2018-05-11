@@ -12,6 +12,7 @@
     animation: moveInLeftMain 1s ease-out;
     &__form {
         &__button {
+            display: inline-block;
             font-size: 1.2rem;
             margin: 1rem 1rem;
             padding: .5rem 1.5rem;
@@ -37,4 +38,9 @@
     color: $color-white;
     min-width: 10%;
     max-width: 100%;
+}
+
+.demo-account {
+    display: block;
+    color: $color-white;
 }

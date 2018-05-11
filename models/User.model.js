@@ -16,6 +16,16 @@ UserSchema.set('toObject', {
       delete ret.__v;
     }
   });
+
+  /*
+  test.methods.serialize = function() {
+    return {
+      id: this._id
+    };
+  };
+
+  test.serialize()
+  */
   
 UserSchema.methods.validatePassword = function (password) {
     return bcrypt.compare(password, this.password);

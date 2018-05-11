@@ -37,6 +37,7 @@ const macronator = (function() {
                 <button class="login__form__button" type="submit">Log In</button>
             </form>
             <button class="sign-up-button">New User Sign Up</button>
+            <a class="demo-account" href="#">Sign In with Demo Account</a>
         </div>
         `
         render(html);
@@ -77,8 +78,8 @@ const macronator = (function() {
                         api.getUsers(function(results) {
                             results.forEach((user) => {
                                 if (user.username === loginUsername) {
-                                        console.log(user);
-                                        store.currentUser = user;
+                                    console.log(user);
+                                    store.currentUser = user;
                                 } 
                             })
                             if (store.currentUser) {
@@ -158,6 +159,50 @@ const macronator = (function() {
                     }
                 }
             });
+        })
+    }
+
+    const demoAccount = function() {
+        $('.demo-account').on('click', function() {
+            console.log('attempt')
+            event.preventDefault();
+            const loginUsername = "test";
+            const loginPassword = "test";
+            const loginUser = {
+                username: loginUsername,
+                password: loginPassword
+            }
+            let found = false;
+            let falsePassword = false;
+            api.getUsers((results) => {
+                results.forEach((user) => {
+                    if (user.username === loginUsername) {
+                        found = true;
+                    }
+                })
+                if (found === false) {
+                    alert(`Username ${loginUsername} not found, please check your username input.`)
+                } else {
+                    api.login(loginUser, function(results) {
+                        api.getUsers(function(results) {
+                            results.forEach((user) => {
+                                if (user.username === loginUsername) {
+                                    console.log(user);
+                                    store.currentUser = user;
+                                } 
+                            })
+                            if (store.currentUser) {
+                                macronator.sortDataDate();
+                                populateNav();
+                                videoTwo();
+                                macronator.renderMain();
+                            } else {
+                                falsePassword = true;
+                            }
+                        })
+                    })
+                }
+            })
         })
     }
 
@@ -827,6 +872,7 @@ const macronator = (function() {
         home();
         inputNew();
         login();
+        demoAccount();
     }
 
     return {

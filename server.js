@@ -51,7 +51,6 @@ app.use(function (err, req, res, next) {
 });
 //
 
-//!!Wall-break
 mongoose.connect(MONGODB_URI)
     .then(instance => {
     const conn = instance.connections[0];

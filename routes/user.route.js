@@ -3,8 +3,8 @@ const router = express.Router();
 const mongoose = require('mongoose');
 
 const User = require('../models/User.model');
-const Data = require('../models/Data.model')
-const Measurement = require('../models/Measurements.model')
+const Data = require('../models/Data.model');
+const Measurement = require('../models/Measurements.model');
 
 router.get('/users', (req, res, next) => {
     User.find()

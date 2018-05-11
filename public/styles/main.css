@@ -218,6 +218,7 @@ h4 {
   .login * {
     font-size: 1.4rem; }
   .login__form__button {
+    display: inline-block;
     font-size: 1.2rem;
     margin: 1rem 1rem;
     padding: .5rem 1.5rem;
@@ -239,6 +240,10 @@ h4 {
   color: #fff;
   min-width: 10%;
   max-width: 100%; }
+
+.demo-account {
+  display: block;
+  color: #fff; }
 
 .sign-up {
   background-image: linear-gradient(to right, rgba(33, 123, 176, 0.8), #0b3c5d);
