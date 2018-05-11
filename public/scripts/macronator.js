@@ -706,17 +706,22 @@ const macronator = (function() {
     }
     const changePassword = function () {
         $('.app').on('click', '.settings__password',function () {
+            // const html = `
+            // <div class="settings">
+            //     <form class ="settings__form" action="submit">
+            //         <label for="settings__old-password">Old Password</label>
+            //         <input class="settings__old-password" type="password" required>
+            //         <label for="settings__new-password">New Password</label>
+            //         <input class="settings__new-password" type="password" required>
+            //         <label for="settings__confirm-password">Confirm New Password</label>
+            //         <input class="settings__confirm-password" type="password" required>
+            //         <button class="settings__submit submit-data">Submit</button>
+            //     </form>
+            // </div>
+            // `
             const html = `
             <div class="settings">
-                <form class ="settings__form" action="submit">
-                    <label for="settings__old-password">Old Password</label>
-                    <input class="settings__old-password" type="password" required>
-                    <label for="settings__new-password">New Password</label>
-                    <input class="settings__new-password" type="password" required>
-                    <label for="settings__confirm-password">Confirm New Password</label>
-                    <input class="settings__confirm-password" type="password" required>
-                    <button class="settings__submit submit-data">Submit</button>
-                </form>
+                <span>Password Change is temporarily disabled due to demo account usage.</span>
             </div>
             `
             render(html);
