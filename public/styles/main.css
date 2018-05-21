@@ -150,8 +150,7 @@ h4 {
   margin-bottom: 5rem;
   transform: translate(-50%, 2rem);
   text-align: center;
-  padding-bottom: 3rem;
-  animation: moveInLeftMain 1s ease-out; }
+  padding-bottom: 3rem; }
   .home * {
     list-style: none; }
   .home * {
@@ -253,8 +252,7 @@ h4 {
   left: 50%;
   transform: translate(-50%, 2rem);
   text-align: center;
-  padding-bottom: 3rem;
-  animation: moveInRightMain 1s ease-out; }
+  padding-bottom: 3rem; }
   .sign-up * {
     list-style: none; }
   .sign-up * {
@@ -420,8 +418,7 @@ ul li a b {
   left: 50%;
   transform: translate(-50%, 2rem);
   text-align: center;
-  padding-bottom: 3rem;
-  animation: moveInBottomMain 1s ease-out; }
+  padding-bottom: 3rem; }
   .edit * {
     font-size: 1.4rem; }
   .edit__h3 {
