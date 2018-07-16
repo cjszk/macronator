@@ -29,11 +29,11 @@ app.use(morgan(process.env.NODE_ENV === 'development' ? 'dev' : 'common', {
     skip: () => process.env.NODE_ENV === 'test'
 }));
 
-// app.use(
-//     cors({
-//         origin: CLIENT_ORIGIN
-//     })
-// );
+app.use(
+    cors({
+        origin: CLIENT_ORIGIN
+    })
+);
 
 app.get('/api', (req, res, next) => {
     res.json('Heroku Server Started')
