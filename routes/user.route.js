@@ -25,7 +25,6 @@ router.get('/users', (req, res, next) => {
 
 router.get('/users/:id', (req, res, next) => {
     const { id } = req.params;
-    console.log(`id is :` +id);
 
     User.findById(id)
         .populate('data')
@@ -91,50 +90,17 @@ router.post('/users', (req, res, next) => {
     })
 })
 
-router.put('/users/:id', (req, res, next) => {
+router.put('/change-goal/:id', (req, res, next) => {
     const { id } = req.params;
-    const { username, password, data, goal } = req.body;
-    const options = { new: true }
+    const { goal } = req.body;
 
-    let newUser = {
-        username: username,
-        password: password,
-        data: data,
-        goal: goal
-    }
-
-    User.findByIdAndUpdate(id, newUser, options)
-        .populate('data')
-        //Deep populate measurements
-        .populate({
-            path: 'data',
-            populate: { path: 'measurements'}
-        })
+    User.findById(id)
         .then((result) => {
-            console.log(result);
-            if (result) {
-                res.json(result);
-            }
+            newUser = result;
+            newUser.goal = goal;
         })
-        .catch((error) => {
-            next(error);
-        })
-});
-
-router.put('/password/:id', (req, res, next) => {
-    const { id } = req.params;
-    const { username, password, data, goal } = req.body;
-    const options = { new: true }
-
-    return User.hashPassword(password)
-    .then(digest => {
-        const newUser = {
-            data: data,
-            goal: "Maintain",
-            username: username,
-            password: digest
-        }
-        User.findByIdAndUpdate(id, newUser, options)
+        .then(() => {
+            User.findByIdAndUpdate(id, newUser)
             .populate('data')
             //Deep populate measurements
             .populate({
@@ -143,13 +109,51 @@ router.put('/password/:id', (req, res, next) => {
             })
             .then((result) => {
                 if (result) {
-                    console.log(result);
                     res.json(result);
                 }
             })
             .catch((error) => {
                 next(error);
             })
+        })
+        .catch(error => next(error))
+
+
+});
+
+router.put('/change-password/:id', (req, res, next) => {
+    const { id } = req.params;
+    const { password } = req.body;
+
+    let newPassword;
+    let newUser = {}
+
+    return User.hashPassword(password)
+    .then(digest => {
+        newPassword = digest;
+        User.findById(id)
+            .then((result) => {
+                newUser = result;
+                newUser.password = newPassword;
+            })
+            .then((result) => {
+                User.findByIdAndUpdate(id, newUser)
+                .populate('data')
+                //Deep populate measurements
+                .populate({
+                    path: 'data',
+                    populate: { path: 'measurements'}
+                })
+                .then((result) => {
+                    if (result) {
+                        res.json(result);
+                    }
+                })
+                .catch((error) => {
+                    next(error);
+                })
+            })
+            .catch((err) => next(err))
     })
 });
 

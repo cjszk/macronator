@@ -164,7 +164,6 @@ const macronator = (function() {
 
     const demoAccount = function() {
         $('.demo-account').on('click', function() {
-            console.log('attempt')
             event.preventDefault();
             const loginUsername = "test";
             const loginPassword = "test";

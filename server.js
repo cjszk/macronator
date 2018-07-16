@@ -1,39 +1,58 @@
+'use strict';
+
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
 
 const app = express();
 
+const registerRouter = require('./routes/register');
+const authRouter = require('./routes/auth');
+
 const userRouter = require('./routes/user.route');
 const dataRouter = require('./routes/data.route');
 const measurementRouter = require('./routes/measurement.route');
-const authRouter = require('./routes/auth');
 const passport = require('passport');
+
+const jwtStrategy = require('./passport/jwt');
+const jwt = require('jsonwebtoken');
 const localStrategy = require('./passport/local');
 
-// const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost/macro-coach';
+const { PORT, CLIENT_ORIGIN } = require('./config');
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://chris:macronator@ds127958.mlab.com:27958/macronator';
-// const MONGODB_URI = 'mongodb://chris:macronator@ds127958.mlab.com:27958/macronator';
 
-const User = require('./models/User.model')
-
-PORT = process.env.PORT || 8080;
 
 app.use(morgan(process.env.NODE_ENV === 'development' ? 'dev' : 'common', {
     skip: () => process.env.NODE_ENV === 'test'
-  }));
+}));
+
+app.use(
+    cors({
+        origin: CLIENT_ORIGIN
+    })
+);
+
+app.get('/api', (req, res, next) => {
+    res.json('Heroku Server Started')
+  })  
 
 app.use(express.static('public'));
-
 app.use(express.json());
 
-passport.use(localStrategy);
+app.use('/api', registerRouter);
+app.use('/api', authRouter);
 
-app.use('/', userRouter);
-app.use('/', dataRouter);
-app.use('/', measurementRouter);
-app.use('/', authRouter);
+passport.use(localStrategy);
+passport.use(jwtStrategy);
+
+app.use('/api', userRouter);
+app.use('/api', dataRouter);
+app.use('/api', measurementRouter);
+
+app.use(passport.authenticate('jwt', {session: false, failWithError: true}));
 
 //
 app.use(function (req, res, next) {

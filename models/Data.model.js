@@ -4,7 +4,6 @@ const DataSchema = new mongoose.Schema({
     date: {type: Date},
     weight: {type: Number},
     calories: {type: Number},
-    measurements: {type: Object, ref: 'Measurement'}
 })
 
 DataSchema.set('toObject', {

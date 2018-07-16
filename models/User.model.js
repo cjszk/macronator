@@ -10,29 +10,19 @@ const UserSchema = new mongoose.Schema({
 })
 
 UserSchema.set('toObject', {
-    transform: function (doc, ret) {
-      ret.id = ret._id;
-      delete ret._id;
-      delete ret.__v;
-    }
-  });
+  transform: function (doc, ret) {
+    ret.id = ret._id;
+    delete ret._id;
+    delete ret.__v;
+  }
+});
 
-  /*
-  test.methods.serialize = function() {
-    return {
-      id: this._id
-    };
-  };
-
-  test.serialize()
-  */
-  
 UserSchema.methods.validatePassword = function (password) {
-    return bcrypt.compare(password, this.password);
-};
+  return bcrypt.compare(password, this.password);
+}; 
 
 UserSchema.statics.hashPassword = function (password) {
-    return bcrypt.hash(password, 10);
-}
+  return bcrypt.hash(password, 10);
+};
 
 module.exports = mongoose.model('User', UserSchema);
